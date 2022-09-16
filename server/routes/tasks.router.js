@@ -34,4 +34,19 @@ router.post("/", (req, res) => {
     });
 });
 
+// Setup DELETE to remove from database
+router.delete("/:taskid", (req, res) => {
+  const taskid = req.params.taskid;
+  const queryText = `DELETE FROM "tasks" WHERE "id"=$1`;
+
+  pool
+    .query(queryText, [taskid])
+    .then(() => {
+      res.send(`Deleted task id: ${taskid}`).status(200);
+    })
+    .catch((error) => {
+      console.log("error in delete :>> ", error);
+    });
+});
+
 module.exports = router;
