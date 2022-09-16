@@ -65,4 +65,21 @@ router.put("/togcomplete/:taskid", (req, res) => {
     });
 }); // end PUT to complete router
 
+// Setup for PUT to update task
+router.put("/edit/:taskid", (req, res) => {
+  const taskid = req.params.taskid;
+  const { note } = req.body;
+  const queryText = `UPDATE "tasks" SET "note"=$2 WHERE "id"=$1;`;
+
+  pool
+    .query(queryText, [taskid, note])
+    .then(() => {
+      res.send(`Updated task of ${taskid}`).status(200);
+    })
+    .catch((error) => {
+      console.log("error in put to edit :>> ", error);
+      res.send(`Error updating task edit`).status(500);
+    });
+}); // end PUT to edit router
+
 module.exports = router;
