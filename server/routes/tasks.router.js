@@ -4,7 +4,7 @@ const pool = require("../modules/pool");
 
 // Setup GET to pull from database
 router.get("/", (req, res) => {
-  const queryText = `SELECT * FROM "tasks";`;
+  const queryText = `SELECT * FROM "tasks" ORDER BY "id";`;
 
   pool
     .query(queryText)
@@ -52,7 +52,7 @@ router.delete("/:taskid", (req, res) => {
 // Setup for PUT to update complete status
 router.put("/togcomplete/:taskid", (req, res) => {
   const taskid = req.params.taskid;
-  const queryText = `UPDATE "tasks" SET "is-complete"=(NOT "is-complete") WHERE "id"=$1;`;
+  const queryText = `UPDATE "tasks" SET "is_complete"=(NOT "is_complete") WHERE "id"=$1;`;
 
   pool
     .query(queryText, [taskid])

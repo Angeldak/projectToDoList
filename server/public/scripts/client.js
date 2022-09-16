@@ -3,18 +3,18 @@ $(onReady);
 function onReady() {
   clickHandler();
   appendTasks();
-}
+} // end onReady
 
 function clickHandler() {
   $("#addNoteBtn").on("click", addTask);
-  //   $("#noteList").on("click", ".complete-button", completeTask);
-  //   $("#noteList").on("click", ".dit-button", editTask);
+  $("#noteList").on("click", ".complete-button", completeTask);
+  //   $("#noteList").on("click", ".edit-button", editTask);
   $("#noteList").on("click", ".delete-button", deleteTask);
-}
+} // end clickHandler
 
 function checkError(error) {
   console.log("error caught :>> ", error);
-}
+} // end checkError
 
 function appendTasks() {
   $.ajax({
@@ -39,7 +39,7 @@ function appendTasks() {
       }
     })
     .catch(checkError);
-}
+} // end appendTasks
 
 function addTask() {
   $.ajax({
@@ -54,7 +54,7 @@ function addTask() {
       $("#inputNote").val("");
     })
     .catch(checkError);
-}
+} // end addTask
 
 function deleteTask(event) {
   const currentID = $(event.target).closest("tr").data("id");
@@ -67,4 +67,17 @@ function deleteTask(event) {
       appendTasks();
     })
     .catch(checkError);
-}
+} // end deleteTask
+
+function completeTask(event) {
+  const currentID = $(event.target).closest("tr").data("id");
+
+  $.ajax({
+    method: "PUT",
+    url: `/tasks/togcomplete/${currentID}`,
+  })
+    .then(() => {
+      appendTasks();
+    })
+    .catch(checkError);
+} // end completeTask
