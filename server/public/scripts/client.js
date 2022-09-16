@@ -7,9 +7,9 @@ function onReady() {
 
 function clickHandler() {
   $("#addNoteBtn").on("click", addTask);
-  //   $("#noteList").on("click", "complete-button", completeTask);
-  //   $("#noteList").on("click", "edit-button", editTask);
-  //   $("#noteList").on("click", "delete-button", deleteTask);
+  //   $("#noteList").on("click", ".complete-button", completeTask);
+  //   $("#noteList").on("click", ".dit-button", editTask);
+  $("#noteList").on("click", ".delete-button", deleteTask);
 }
 
 function checkError(error) {
@@ -48,6 +48,20 @@ function addTask() {
     data: {
       note: $("#inputNote").val(),
     },
+  })
+    .then(() => {
+      appendTasks();
+      $("#inputNote").val("");
+    })
+    .catch(checkError);
+}
+
+function deleteTask(event) {
+  const currentID = $(event.target).closest("tr").data("id");
+
+  $.ajax({
+    method: "DELETE",
+    url: `/tasks/${currentID}`,
   })
     .then(() => {
       appendTasks();
