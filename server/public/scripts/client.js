@@ -4,7 +4,9 @@ let editMode = false;
 let globalIDHolder = "";
 
 function onReady() {
+  // Setup click handlers on load
   clickHandler();
+  // Show current tasks on load
   appendTasks();
 } // end onReady
 
@@ -14,13 +16,16 @@ function clickHandler() {
   $("#noteList").on("click", ".edit-button", editTask);
   $("#noteList").on("click", ".delete-button", deleteTask);
   $(".cancel-button").on("click", resetAfterEdit);
+  // Setup submit on enter press
+  $("html").on("keypress", (event) => {
+    if (event.which === 13) {
+      return addTask();
+    }
+  });
 } // end clickHandler
 
-function checkError(error) {
-  console.log("error caught :>> ", error);
-} // end checkError
-
 function appendTasks() {
+  // Function to append task list to DOM with buttons
   $.ajax({
     method: "GET",
     url: "/tasks",
@@ -42,10 +47,15 @@ function appendTasks() {
         `);
       }
     })
-    .catch(checkError);
+    .catch(() => {
+      console.log("error in appendTasks", error);
+    });
 } // end appendTasks
 
 function addTask() {
+  //Function to add task
+  // Checking if in global edit mode
+  // if in edit mode update current task on click
   if (editMode === true) {
     $.ajax({
       method: "PUT",
@@ -58,8 +68,11 @@ function addTask() {
         appendTasks();
         resetAfterEdit();
       })
-      .catch(checkError);
+      .catch(() => {
+        console.log("error in addTask edit", error);
+      });
   } else {
+    // If not in global edit mode then add on new task on click
     $.ajax({
       method: "POST",
       url: "/tasks",
@@ -71,11 +84,14 @@ function addTask() {
         appendTasks();
         $("#inputNote").val("");
       })
-      .catch(checkError);
+      .catch(() => {
+        console.log("error in addTask non-edit", error);
+      });
   }
 } // end addTask
 
 function deleteTask(event) {
+  // Function to remove task from DOM and database
   const currentID = $(event.target).closest("tr").data("id");
 
   $.ajax({
@@ -85,10 +101,13 @@ function deleteTask(event) {
     .then(() => {
       appendTasks();
     })
-    .catch(checkError);
+    .catch(() => {
+      console.log("error in deleteTask", error);
+    });
 } // end deleteTask
 
 function completeTask(event) {
+  // Function to toggle complete on click
   const currentID = $(event.target).closest("tr").data("id");
 
   $.ajax({
@@ -98,10 +117,13 @@ function completeTask(event) {
     .then(() => {
       appendTasks();
     })
-    .catch(checkError);
+    .catch(() => {
+      console.log("error in completeTask", error);
+    });
 } // end completeTask
 
 function editTask(event) {
+  // Function to get into global edit mode and save the clicked id
   globalIDHolder = $(event.target).closest("tr").data("id");
   editMode = true;
   $("#inputNote").val($(event.target).closest("tr").children().first().text());
@@ -110,6 +132,7 @@ function editTask(event) {
 } // end editTask
 
 function resetAfterEdit() {
+  // Function to reset after edit add or cancel
   globalIDHolder = "";
   editMode = false;
   $("#inputNote").val("");
