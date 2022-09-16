@@ -49,4 +49,20 @@ router.delete("/:taskid", (req, res) => {
     });
 });
 
+// Setup for PUT to update complete status
+router.put("/togcomplete/:taskid", (req, res) => {
+  const taskid = req.params.taskid;
+  const queryText = `UPDATE "tasks" SET "is-complete"=(NOT "is-complete") WHERE "id"=$1;`;
+
+  pool
+    .query(queryText, [taskid])
+    .then(() => {
+      res.send(`Toggled complete status of ${taskid}`).status(200);
+    })
+    .catch((error) => {
+      console.log("error in put to complete :>> ", error);
+      res.send(`Error updating task complete`).status(500);
+    });
+});
+
 module.exports = router;
