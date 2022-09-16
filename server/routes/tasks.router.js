@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
       console.log("error caught in get :>> ", error);
       res.sendStatus(500);
     });
-});
+}); // end GET router
 
 // Setup POST to insert to database
 router.post("/", (req, res) => {
@@ -32,7 +32,7 @@ router.post("/", (req, res) => {
       console.log("error in post :>> ", error);
       res.send("Error in post").status(500);
     });
-});
+}); // end POST router
 
 // Setup DELETE to remove from database
 router.delete("/:taskid", (req, res) => {
@@ -47,7 +47,7 @@ router.delete("/:taskid", (req, res) => {
     .catch((error) => {
       console.log("error in delete :>> ", error);
     });
-});
+}); // end DELETE router
 
 // Setup for PUT to update complete status
 router.put("/togcomplete/:taskid", (req, res) => {
@@ -63,6 +63,6 @@ router.put("/togcomplete/:taskid", (req, res) => {
       console.log("error in put to complete :>> ", error);
       res.send(`Error updating task complete`).status(500);
     });
-});
+}); // end PUT to complete router
 
 module.exports = router;
