@@ -11,6 +11,12 @@ h1 {
   font-family: "Bebas Neue", cursive;
   text-align: center;
   margin-top: 10%;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.color-red {
+  color: rgb(175, 0, 0);
 }
 
 .cancel-button {
