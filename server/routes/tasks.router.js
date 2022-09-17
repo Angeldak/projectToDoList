@@ -22,6 +22,7 @@ router.get("/sort/:order", (req, res) => {
   const order = req.params.order.toUpperCase();
   let queryText = `SELECT * FROM "tasks" ORDER BY "is_complete" ASC, "id"`;
 
+  // Checking order param and concating to query protecting from SQL injection
   order === "DESC" ? (queryText += " DESC;") : (queryText += " ASC;");
 
   pool

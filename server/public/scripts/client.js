@@ -120,7 +120,7 @@ function completeTask(event) {
 function deletePrep(event) {
   // Function to store current ID in global variable
   globalIDHolder = $(event.target).closest("tr").data("id");
-}
+} // end deletePrep
 
 function deleteTask(event) {
   // Function to remove task from DOM and database
@@ -147,6 +147,7 @@ function editTask(event) {
 } // end editTask
 
 function getTasks() {
+  // Function to get all tasks from database and then append
   $.ajax({
     method: "GET",
     url: "/tasks",
@@ -157,7 +158,7 @@ function getTasks() {
     .catch(() => {
       console.log("error in appendTasks", error);
     });
-}
+} // end getTasks
 
 function resetAfterEdit() {
   // Function to reset after edit add or cancel
@@ -169,6 +170,8 @@ function resetAfterEdit() {
 } // end resetAfterEdit
 
 function sortTask() {
+  // Function to sort tasks (leaves completed at the bottom)
+  // Checking current global sortOrder and toggling
   sortOrder === "desc" ? (sortOrder = "asc") : (sortOrder = "desc");
 
   $.ajax({
@@ -181,4 +184,4 @@ function sortTask() {
     .catch(function (error) {
       console.log("error in GET sort", error);
     });
-}
+} // end sortTask
