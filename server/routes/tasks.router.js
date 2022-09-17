@@ -17,6 +17,25 @@ router.get("/", (req, res) => {
     });
 }); // end GET router
 
+// Setup GET to sort from database
+router.get("/sort/:order", (req, res) => {
+  const order = req.params.order.toUpperCase();
+  let queryText = `SELECT * FROM "tasks" ORDER BY "is_complete" ASC, "id"`;
+
+  order === "DESC" ? (queryText += " DESC;") : (queryText += " ASC;");
+
+  pool
+    .query(queryText)
+    .then((result) => {
+      // Sends back the results in an object
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("error getting books", error);
+      res.sendStatus(500);
+    });
+});
+
 // Setup POST to insert to database
 router.post("/", (req, res) => {
   const { note } = req.body;
