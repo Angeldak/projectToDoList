@@ -36,7 +36,7 @@ function appendTasks() {
 
       for (const task of results) {
         task.is_complete
-          ? (completeClass = "table-danger")
+          ? (completeClass = "table-danger text-decoration-line-through")
           : (completeClass = "");
         $("#noteList").append(`
             <tr class="${completeClass} align-middle table-font-sm" data-is-complete="${
