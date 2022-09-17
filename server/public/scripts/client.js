@@ -2,12 +2,13 @@
 $(onReady);
 let editMode = false;
 let globalIDHolder = "";
+let sortOrder = "asc";
 
 function onReady() {
   // Setup click handlers on load
   clickHandler();
   // Show current tasks on load
-  appendTasks();
+  getTasks();
 } // end onReady
 
 function clickHandler() {
@@ -18,6 +19,7 @@ function clickHandler() {
   $(".cancel-button").on("click", resetAfterEdit);
   $("#modalDelete").on("click", deleteTask);
   $("#closeModal").on("click", resetAfterEdit);
+  $("#sort-button").on("click", sortTask);
   // Setup submit on enter press
   $("html").on("keypress", (event) => {
     if (event.which === 13) {
@@ -26,25 +28,19 @@ function clickHandler() {
   });
 } // end clickHandler
 
-function appendTasks() {
+function appendTasks(getArray) {
   // Function to append task list to DOM with buttons
-  $.ajax({
-    method: "GET",
-    url: "/tasks",
-  })
-    .then((results) => {
-      let completeClass = "";
-      $("#noteList").empty();
+  let completeClass = "";
+  $("#noteList").empty();
 
-      for (const task of results) {
-        task.is_complete
-          ? (completeClass =
-              "table-danger text-decoration-line-through color-red")
-          : (completeClass = "");
-        $("#noteList").append(`
+  for (const task of getArray) {
+    task.is_complete
+      ? (completeClass = "table-danger text-decoration-line-through color-red")
+      : (completeClass = "");
+    $("#noteList").append(`
             <tr class="${completeClass} align-middle table-font-sm" data-is-complete="${
-          task.is_complete
-        }" data-id="${task.id}">
+      task.is_complete
+    }" data-id="${task.id}">
                 <td class="">${task.note}</td>
                 <td class="">${
                   task.is_complete ? "Complete" : "Not Completed"
@@ -64,11 +60,7 @@ function appendTasks() {
                 </td>
             </tr>
         `);
-      }
-    })
-    .catch(() => {
-      console.log("error in appendTasks", error);
-    });
+  }
 } // end appendTasks
 
 function addTask() {
@@ -84,7 +76,7 @@ function addTask() {
       },
     })
       .then(() => {
-        appendTasks();
+        getTasks();
         resetAfterEdit();
       })
       .catch(() => {
@@ -100,7 +92,7 @@ function addTask() {
       },
     })
       .then(() => {
-        appendTasks();
+        getTasks();
         $("#inputNote").val("");
       })
       .catch(() => {
@@ -108,6 +100,22 @@ function addTask() {
       });
   }
 } // end addTask
+
+function completeTask(event) {
+  // Function to toggle complete on click
+  const currentID = $(event.target).closest("tr").data("id");
+
+  $.ajax({
+    method: "PUT",
+    url: `/tasks/togcomplete/${currentID}`,
+  })
+    .then(() => {
+      getTasks();
+    })
+    .catch(() => {
+      console.log("error in completeTask", error);
+    });
+} // end completeTask
 
 function deletePrep(event) {
   // Function to store current ID in global variable
@@ -121,29 +129,13 @@ function deleteTask(event) {
     url: `/tasks/${globalIDHolder}`,
   })
     .then(() => {
-      appendTasks();
+      getTasks();
       globalIDHolder = "";
     })
     .catch(() => {
       console.log("error in deleteTask", error);
     });
 } // end deleteTask
-
-function completeTask(event) {
-  // Function to toggle complete on click
-  const currentID = $(event.target).closest("tr").data("id");
-
-  $.ajax({
-    method: "PUT",
-    url: `/tasks/togcomplete/${currentID}`,
-  })
-    .then(() => {
-      appendTasks();
-    })
-    .catch(() => {
-      console.log("error in completeTask", error);
-    });
-} // end completeTask
 
 function editTask(event) {
   // Function to get into global edit mode and save the clicked id
@@ -154,6 +146,19 @@ function editTask(event) {
   $(".cancel-button").show();
 } // end editTask
 
+function getTasks() {
+  $.ajax({
+    method: "GET",
+    url: "/tasks",
+  })
+    .then((results) => {
+      appendTasks(results);
+    })
+    .catch(() => {
+      console.log("error in appendTasks", error);
+    });
+}
+
 function resetAfterEdit() {
   // Function to reset after edit add or cancel
   globalIDHolder = "";
@@ -162,3 +167,18 @@ function resetAfterEdit() {
   $("#addNoteBtn").text("Add Task");
   $(".cancel-button").hide();
 } // end resetAfterEdit
+
+function sortTask() {
+  sortOrder === "desc" ? (sortOrder = "asc") : (sortOrder = "desc");
+
+  $.ajax({
+    type: "GET",
+    url: `/tasks/sort/${sortOrder}`,
+  })
+    .then((results) => {
+      appendTasks(results);
+    })
+    .catch(function (error) {
+      console.log("error in GET sort", error);
+    });
+}
