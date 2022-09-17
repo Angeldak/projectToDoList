@@ -1,7 +1,22 @@
-h1 {
-  color: red;
-}
-
 .cancel-button {
   display: none;
 }
+
+.complete-button,
+.delete-button,
+.edit-button {
+  display: none;
+}
+
+tr:hover button {
+  display: inline;
+}
+
+/* .custom-class {
+  display: none;
+}
+@include media-breakpoint-up(sm) {
+  .custom-class {
+    display: block;
+  }
+} */
