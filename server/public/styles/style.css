@@ -1,3 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;700&display=swap");
+
+body {
+  background-image: url("https://www.stockvault.net/data/2021/05/10/285722/preview16.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  font-family: "Outfit", sans-serif;
+}
+
+h1 {
+  font-family: "Bebas Neue", cursive;
+  text-align: center;
+  margin-top: 10%;
+}
+
 .cancel-button {
   display: none;
 }
@@ -8,15 +23,29 @@
   display: none;
 }
 
+td {
+  vertical-align: center;
+  padding: 0;
+}
+
 tr:hover button {
   display: inline;
 }
 
-/* .custom-class {
-  display: none;
+.table-font-sm {
+  font-size: 0.75rem;
 }
-@include media-breakpoint-up(sm) {
-  .custom-class {
-    display: block;
+
+.table-icons-sm {
+  width: 33%;
+}
+
+@media (min-width: 575.98px) {
+  .table-font-sm {
+    font-size: 1rem;
   }
-} */
+
+  .table-icons-sm {
+    width: 25%;
+  }
+}

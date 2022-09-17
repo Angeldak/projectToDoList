@@ -31,14 +31,22 @@ function appendTasks() {
     url: "/tasks",
   })
     .then((results) => {
+      let completeClass = "";
       $("#noteList").empty();
 
       for (const task of results) {
+        task.is_complete
+          ? (completeClass = "table-danger")
+          : (completeClass = "");
         $("#noteList").append(`
-            <tr data-is-complete="${task.is_complete}" data-id="${task.id}">
-                <td>${task.note}</td>
-                <td>${task.is_complete ? "Complete" : "Not Completed"}</td>
-                <td class="w-50">
+            <tr class="${completeClass} align-middle table-font-sm" data-is-complete="${
+          task.is_complete
+        }" data-id="${task.id}">
+                <td class="">${task.note}</td>
+                <td class="">${
+                  task.is_complete ? "Complete" : "Not Completed"
+                }</td>
+                <td class="py-0 table-icons-sm">
                 <button class="complete-button btn-sm btn btn-outline-success m-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                 <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
               </svg></button>
