@@ -15,8 +15,8 @@ h1 {
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
-.color-red {
-  color: rgb(175, 0, 0);
+.color-green {
+  color: #198754;
 }
 
 .cancel-button {
