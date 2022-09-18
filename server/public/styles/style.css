@@ -8,7 +8,7 @@ body {
 }
 
 h1 {
-  font-family: "Bebas Neue", cursive;
+  font-family: "Bebas Neue", cursive, sans-serif;
   text-align: center;
   margin-top: 10%;
   color: white;
@@ -19,13 +19,10 @@ h1 {
   color: #198754;
 }
 
-.cancel-button {
-  display: none;
-}
-
 .complete-button,
 .delete-button,
-.edit-button {
+.edit-button,
+.cancel-button {
   display: none;
 }
 
