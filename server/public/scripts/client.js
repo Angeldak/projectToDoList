@@ -43,9 +43,12 @@ function appendTasks(getArray) {
       const day = task.when_complete.slice(8, 10);
       fullDate = `${month}/${day}/${year}`;
     }
+
+    // Check if task is completed; if so, add special styling classes
     task.is_complete
       ? (completeClass = "table-danger text-decoration-line-through color-red")
       : (completeClass = "");
+
     $("#noteList").append(`
             <tr class="${completeClass} align-middle table-font-sm" data-is-complete="${
       task.is_complete
