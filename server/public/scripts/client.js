@@ -34,16 +34,28 @@ function appendTasks(getArray) {
   $("#noteList").empty();
 
   for (const task of getArray) {
+    // Manually creating date from SQL (could have used moment
+    // but I wanted to see if I could effectively do it myself.)
+    let fullDate = "";
+    if (task.when_complete) {
+      const year = task.when_complete.slice(0, 4);
+      const month = task.when_complete.slice(5, 7);
+      const day = task.when_complete.slice(8, 10);
+      fullDate = `${month}/${day}/${year}`;
+    }
+
+    // Check if task is completed; if so, add special styling classes
     task.is_complete
       ? (completeClass = "table-danger text-decoration-line-through color-red")
       : (completeClass = "");
+
     $("#noteList").append(`
             <tr class="${completeClass} align-middle table-font-sm" data-is-complete="${
       task.is_complete
     }" data-id="${task.id}">
                 <td class="">${task.note}</td>
                 <td class="">${
-                  task.is_complete ? "Complete" : "Not Completed"
+                  task.is_complete ? `Completed ${fullDate}` : "Not Completed"
                 }</td>
                 <td class="py-0 table-icons-sm">
                 <button class="complete-button btn-sm btn btn-outline-success m-0"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
@@ -104,10 +116,14 @@ function addTask() {
 function completeTask(event) {
   // Function to toggle complete on click
   const currentID = $(event.target).closest("tr").data("id");
+  const currentDate = new Date();
 
   $.ajax({
     method: "PUT",
     url: `/tasks/togcomplete/${currentID}`,
+    data: {
+      when_complete: currentDate.toLocaleDateString(),
+    },
   })
     .then(() => {
       getTasks();

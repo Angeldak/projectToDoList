@@ -72,10 +72,11 @@ router.delete("/:taskid", (req, res) => {
 // Setup for PUT to update complete status
 router.put("/togcomplete/:taskid", (req, res) => {
   const taskid = req.params.taskid;
-  const queryText = `UPDATE "tasks" SET "is_complete"=(NOT "is_complete") WHERE "id"=$1;`;
+  const { when_complete } = req.body;
+  const queryText = `UPDATE "tasks" SET "is_complete"=(NOT "is_complete"), "when_complete"=$2 WHERE "id"=$1;`;
 
   pool
-    .query(queryText, [taskid])
+    .query(queryText, [taskid, when_complete])
     .then(() => {
       res.send(`Toggled complete status of ${taskid}`).status(200);
     })
