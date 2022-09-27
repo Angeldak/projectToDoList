@@ -14,6 +14,8 @@ A To-Do application that will track tasks that you need to complete, tasks you h
 - Confirm the deletion of a task to make sure you don't accidentally lose something important
 - Gives a stylish and responsive feel so you can use it on your phone, tablet, or desktop
 
+See life deployed version here! [Heroku Deployed To Do App](https://radiant-basin-65004.herokuapp.com/)
+
 ## Screen Shot
 
 ![Alt text](/images/To%20Do%20Example.jpg?raw=true "To Do Preview")
